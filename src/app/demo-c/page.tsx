@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { siteContent } from "@/lib/content";
 import { img } from "@/lib/basePath";
 
@@ -314,14 +313,11 @@ export default function DemoCPage() {
                 boxShadow: "0 8px 60px rgba(201, 160, 220, 0.35), 0 2px 20px rgba(232, 180, 200, 0.25)",
               }}
             >
-              <Image
-                src="/images/hero/lucy_f3.webp"
+              <img
+                src={img("/images/hero/lucy_f3.webp")}
                 alt="Lucy — ethereal backlit silhouette with lens flare"
-                fill
-                sizes="(max-width: 640px) 280px, (max-width: 1024px) 420px, 520px"
-                className="object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
                 style={{ mixBlendMode: "luminosity", opacity: 0.78 }}
-                priority
               />
               {/* Soft radial fade at edges to blend into background */}
               <div

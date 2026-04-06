@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { siteContent } from "@/lib/content";
 import { img } from "@/lib/basePath";
 
@@ -262,12 +261,10 @@ function HeroSection() {
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
       >
-        <Image
-          src="/images/hero/lucy_f4.webp"
+        <img
+          src={img("/images/hero/lucy_f4.webp")}
           alt=""
-          fill
-          priority
-          className="object-cover object-[center_top]"
+          className="absolute inset-0 w-full h-full object-cover object-[center_top]"
           style={{
             filter: "grayscale(1) contrast(1.15)",
             opacity: 0.45,

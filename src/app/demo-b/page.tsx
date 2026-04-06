@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { siteContent } from "@/lib/content";
 import { img } from "@/lib/basePath";
 
@@ -290,12 +289,10 @@ export default function DemoBPage() {
               className="relative w-full h-full border-l-[4px] lg:border-l-[6px]"
               style={{ borderColor: BLACK }}
             >
-              <Image
-                src="/images/hero/lucy_d3.webp"
+              <img
+                src={img("/images/hero/lucy_d3.webp")}
                 alt="Lucy in a dynamic lunge pose"
-                fill
-                priority
-                className="object-cover object-center"
+                className="absolute inset-0 w-full h-full object-cover object-center"
                 style={{
                   filter: "contrast(1.2) brightness(0.9) grayscale(0.15)",
                   mixBlendMode: "multiply",

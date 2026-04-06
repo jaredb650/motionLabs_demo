@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { siteContent } from "@/lib/content";
 import { img } from "@/lib/basePath";
 
@@ -364,16 +363,13 @@ function HeroSection() {
                   boxShadow: `0 25px 60px -12px rgba(196, 114, 72, 0.15), 0 12px 28px -8px rgba(45, 42, 38, 0.1)`,
                 }}
               >
-                <Image
-                  src="/images/hero/lucy_d6.webp"
+                <img
+                  src={img("/images/hero/lucy_d6.webp")}
                   alt="Lucy performing an arabesque under a pavilion ceiling"
-                  fill
-                  sizes="(max-width: 640px) 85vw, (max-width: 1024px) 60vw, 45vw"
-                  className="object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                   style={{
                     filter: "sepia(0.08) saturate(1.05) brightness(1.02)",
                   }}
-                  priority
                 />
 
                 {/* Subtle warm gradient overlay at the bottom */}
