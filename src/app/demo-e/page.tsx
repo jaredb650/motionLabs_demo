@@ -915,20 +915,6 @@ function ContactSection() {
               </select>
             </div>
 
-            {/* Preferred Schedule (text field) */}
-            <div>
-              <label htmlFor="fi-text-schedule" className={labelClass} style={{ color: C.lightGray }}>
-                Preferred Schedule
-              </label>
-              <input
-                id="fi-text-schedule"
-                name="fi-text-schedule"
-                type="text"
-                className={inputClass}
-                style={baseStyles}
-              />
-            </div>
-
             {/* Message (text field) */}
             <div>
               <label htmlFor="fi-text-message" className={labelClass} style={{ color: C.lightGray }}>
