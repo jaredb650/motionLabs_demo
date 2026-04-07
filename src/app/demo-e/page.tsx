@@ -65,6 +65,15 @@ function FadeSection({
   );
 }
 
+const navLinks = [
+  { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Qualifications", href: "#qualifications" },
+  { label: "Credentials", href: "#credentials" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Contact", href: "#contact" },
+];
+
 /* ─────────────────────────────────────────────
    GOLD DIVIDER
    ───────────────────────────────────────────── */
@@ -150,7 +159,7 @@ function Navigation() {
 
         {/* Desktop links */}
         <ul className="hidden items-center gap-8 md:flex">
-          {siteContent.navLinks.map((link) => (
+          {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
@@ -213,7 +222,7 @@ function Navigation() {
             style={{ backgroundColor: "rgba(245,237,228,0.98)" }}
           >
             <ul className="flex flex-col items-center gap-6 py-8">
-              {siteContent.navLinks.map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
@@ -326,7 +335,7 @@ function HeroSection() {
           className="mx-auto mt-6 max-w-md font-[family-name:var(--font-cormorant)] text-lg font-light italic tracking-wide sm:text-xl"
           style={{ color: C.lightGray }}
         >
-          In the silence between movements, art is born
+          Expert instruction in Salsa, Modern Dance &amp; movement — rooted in science, shaped by artistry
         </motion.p>
 
         {/* CTA */}
@@ -341,7 +350,7 @@ function HeroSection() {
             className="inline-block border px-10 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2]"
             style={{ borderColor: C.gold, color: C.gold }}
           >
-            Begin Your Journey
+            Book a Lesson
           </a>
         </motion.div>
       </motion.div>
@@ -365,9 +374,9 @@ function HeroSection() {
 }
 
 /* =============================================================
-   ABOUT
+   ABOUT — INTRO (brief, coach-focused)
    ============================================================= */
-function AboutSection() {
+function AboutIntroSection() {
   return (
     <section
       id="about"
@@ -387,7 +396,7 @@ function AboutSection() {
             className="mt-4 font-[family-name:var(--font-cormorant)] text-4xl font-light uppercase tracking-[0.15em] sm:text-5xl"
             style={{ color: C.white }}
           >
-            The Artist
+            Meet Your Coach
           </h2>
           <GoldDivider className="mt-8" />
         </FadeSection>
@@ -404,41 +413,71 @@ function AboutSection() {
 
         <GoldDivider className="mt-12" />
 
-        {/* Intro */}
+        {/* What she does for you */}
         <FadeSection delay={0.3} className="mt-12">
           <p
             className="text-center font-[family-name:var(--font-inter)] text-base leading-relaxed sm:text-lg"
             style={{ color: C.offWhite }}
           >
-            {siteContent.about.intro}
+            Lucy Marie Schmidt is a Berlin-based dance instructor and licensed physiotherapist with over a decade of training in movement and dance. Whether you&apos;re a complete beginner or a seasoned dancer, she brings a depth of expertise that meets you exactly where you are.
           </p>
         </FadeSection>
 
-        {/* Specialization */}
+        {/* Her unique edge as a coach */}
         <FadeSection delay={0.15} className="mt-10">
           <p
             className="text-center font-[family-name:var(--font-inter)] text-sm leading-relaxed"
             style={{ color: C.lightGray }}
           >
-            {siteContent.about.specialization}
+            What sets Lucy apart is a rare combination of niche specializations &mdash; Salsa On 1, Salsa On 2, and Modern Dance &mdash; learned from world-class instructors across New York, Toronto, Buenos Aires, and Berlin. As both a physiotherapist and a dancer, she doesn&apos;t just teach steps &mdash; she understands how your body moves, how to prevent injury, and how to unlock your full potential as a mover.
           </p>
         </FadeSection>
+      </div>
+    </section>
+  );
+}
 
-        <GoldDivider className="mt-12" />
+/* =============================================================
+   ABOUT — DETAILS (qualifications, expanded background)
+   ============================================================= */
+function AboutDetailsSection() {
+  return (
+    <section
+      id="qualifications"
+      className="relative py-28 sm:py-36"
+      style={{ backgroundColor: C.nearBlack }}
+    >
+      <div className="mx-auto max-w-4xl px-6 lg:px-10">
+        {/* Section header */}
+        <FadeSection className="text-center">
+          <p
+            className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
+            style={{ color: C.gold }}
+          >
+            Qualifications
+          </p>
+          <h2
+            className="mt-4 font-[family-name:var(--font-cormorant)] text-4xl font-light uppercase tracking-[0.15em] sm:text-5xl"
+            style={{ color: C.white }}
+          >
+            Why Train With Lucy
+          </h2>
+          <GoldDivider className="mt-8" />
+        </FadeSection>
 
-        {/* Uniqueness + Clinical */}
-        <FadeSection delay={0.15} className="mt-12 space-y-8">
+        {/* Depth of training + Clinical edge */}
+        <FadeSection delay={0.15} className="mt-16 space-y-8">
           <p
             className="font-[family-name:var(--font-inter)] text-sm leading-relaxed"
             style={{ color: C.lightGray }}
           >
-            {siteContent.about.uniqueness}
+            Lucy didn&apos;t just learn one style in one city &mdash; she sought out the best teachers globally and synthesized multiple traditions into a teaching methodology that&apos;s uniquely her own. From the Martha Graham School in New York to Danceworks Berlin, from Canadian Dance Company in Toronto to studios in Buenos Aires and Bilbao, her training spans continents and disciplines. In Berlin, this combination of niche Latin and Modern dance expertise is extremely rare.
           </p>
           <p
             className="font-[family-name:var(--font-inter)] text-sm leading-relaxed"
             style={{ color: C.lightGray }}
           >
-            {siteContent.about.clinical}
+            With a Bachelor of Science in Physiotherapy and certifications in STOTT Pilates and Progressive Ballet Technique, Lucy brings a clinical understanding of the human body into every class. She doesn&apos;t just teach movement &mdash; she understands biomechanics, injury prevention, and physical rehabilitation, giving her students a safer, smarter, and more effective training experience.
           </p>
         </FadeSection>
 
@@ -448,7 +487,7 @@ function AboutSection() {
             className="text-center font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
             style={{ color: C.gold }}
           >
-            Highlights
+            Training &amp; Credentials
           </h3>
           <ul className="mt-8 space-y-4">
             {siteContent.about.highlights.map((item, i) => (
@@ -935,8 +974,9 @@ export default function DemoEPage() {
       <FilmGrain />
       <Navigation />
       <HeroSection />
-      <AboutSection />
+      <AboutIntroSection />
       <ServicesSection />
+      <AboutDetailsSection />
       <CredentialsSection />
       <GallerySection />
       <ContactSection />
