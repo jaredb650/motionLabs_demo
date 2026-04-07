@@ -800,7 +800,7 @@ function ContactSection() {
       script.async = true;
       script.onload = () => setSdkReady(true);
       document.head.appendChild(script);
-    } else if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).forminit) {
+    } else if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).Forminit) {
       setSdkReady(true);
     }
   }, []);
@@ -814,8 +814,9 @@ function ContactSection() {
     setShowToast(true);
 
     try {
-      const fi = (window as unknown as Record<string, { submit: (id: string, data: FormData) => Promise<{ error?: { message: string } }> }>).forminit;
-      if (!fi) throw new Error("Forminit SDK not loaded");
+      const ForminitClass = (window as unknown as Record<string, new () => { submit: (id: string, data: FormData) => Promise<{ error?: { message: string } }> }>).Forminit;
+      if (!ForminitClass) throw new Error("Forminit SDK not loaded");
+      const fi = new ForminitClass();
       const { error } = await fi.submit("7lw68385bpv", new FormData(formRef.current));
       if (error) {
         setToastMsg(error.message || "Something went wrong");
