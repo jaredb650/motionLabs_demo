@@ -44,6 +44,16 @@ const styles = [
     accentBorder: "#d4af37",
     bgCard: "rgba(212, 175, 55, 0.04)",
   },
+  {
+    href: "/demo-e",
+    name: "Warm Cinematic",
+    label: "Demo E",
+    vibe: "Cinematic elegance with a warm, inviting palette",
+    gradient: "linear-gradient(135deg, #FAF7F2 0%, #F5EDE4 25%, #C47248 55%, #A0522D 80%, #2D2A26 100%)",
+    accentText: "#C47248",
+    accentBorder: "#C47248",
+    bgCard: "rgba(196, 114, 72, 0.04)",
+  },
 ];
 
 const smoothEase = [0.22, 1, 0.36, 1] as const;
