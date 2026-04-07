@@ -787,11 +787,57 @@ function GallerySection() {
    ============================================================= */
 function ContactSection() {
   const [showToast, setShowToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState("Sending...");
+  const [submitting, setSubmitting] = useState(false);
+  const [sdkReady, setSdkReady] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (typeof window !== "undefined" && !document.getElementById("forminit-sdk")) {
+      const script = document.createElement("script");
+      script.id = "forminit-sdk";
+      script.src = "https://forminit.com/sdk/v1/forminit.js";
+      script.async = true;
+      script.onload = () => setSdkReady(true);
+      document.head.appendChild(script);
+    } else if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).forminit) {
+      setSdkReady(true);
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formRef.current || submitting) return;
+
+    setSubmitting(true);
+    setToastMsg("Sending...");
     setShowToast(true);
+
+    try {
+      const fi = (window as unknown as Record<string, { submit: (id: string, data: FormData) => Promise<{ error?: { message: string } }> }>).forminit;
+      if (!fi) throw new Error("Forminit SDK not loaded");
+      const { error } = await fi.submit("7lw68385bpv", new FormData(formRef.current));
+      if (error) {
+        setToastMsg(error.message || "Something went wrong");
+      } else {
+        setToastMsg("Message sent successfully!");
+        formRef.current.reset();
+      }
+    } catch {
+      setToastMsg("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  const baseStyles: React.CSSProperties = {
+    backgroundColor: C.black,
+    borderColor: `${C.white}20`,
+    color: C.white,
+  };
+
+  const inputClass = "w-full border px-4 py-3 font-[family-name:var(--font-inter)] text-sm outline-none transition-colors duration-300 focus:border-[#C47248]";
+  const labelClass = "mb-2 block font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.25em]";
 
   return (
     <section
@@ -817,92 +863,95 @@ function ContactSection() {
         </FadeSection>
 
         <FadeSection delay={0.2} className="mt-16">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {siteContent.contactFields.map((field) => {
-              const baseStyles: React.CSSProperties = {
-                backgroundColor: C.black,
-                borderColor: `${C.white}20`,
-                color: C.white,
-              };
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+            {/* Name (sender) */}
+            <div>
+              <label htmlFor="fi-sender-fullName" className={labelClass} style={{ color: C.lightGray }}>
+                Name
+              </label>
+              <input
+                id="fi-sender-fullName"
+                name="fi-sender-fullName"
+                type="text"
+                required
+                className={inputClass}
+                style={baseStyles}
+              />
+            </div>
 
-              if (field.type === "textarea") {
-                return (
-                  <div key={field.name}>
-                    <label
-                      htmlFor={field.name}
-                      className="mb-2 block font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.25em]"
-                      style={{ color: C.lightGray }}
-                    >
-                      {field.label}
-                    </label>
-                    <textarea
-                      id={field.name}
-                      name={field.name}
-                      rows={5}
-                      required={field.required}
-                      className="w-full border px-4 py-3 font-[family-name:var(--font-inter)] text-sm outline-none transition-colors duration-300 focus:border-[#C47248]"
-                      style={baseStyles}
-                    />
-                  </div>
-                );
-              }
+            {/* Email (sender) */}
+            <div>
+              <label htmlFor="fi-sender-email" className={labelClass} style={{ color: C.lightGray }}>
+                Email
+              </label>
+              <input
+                id="fi-sender-email"
+                name="fi-sender-email"
+                type="email"
+                required
+                className={inputClass}
+                style={baseStyles}
+              />
+            </div>
 
-              if (field.type === "select") {
-                return (
-                  <div key={field.name}>
-                    <label
-                      htmlFor={field.name}
-                      className="mb-2 block font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.25em]"
-                      style={{ color: C.lightGray }}
-                    >
-                      {field.label}
-                    </label>
-                    <select
-                      id={field.name}
-                      name={field.name}
-                      required={field.required}
-                      className="w-full border px-4 py-3 font-[family-name:var(--font-inter)] text-sm outline-none transition-colors duration-300 focus:border-[#C47248]"
-                      style={baseStyles}
-                    >
-                      <option value="">Select...</option>
-                      {field.options?.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                );
-              }
+            {/* Lesson Type (select field) */}
+            <div>
+              <label htmlFor="fi-select-lessonType" className={labelClass} style={{ color: C.lightGray }}>
+                Lesson Type
+              </label>
+              <select
+                id="fi-select-lessonType"
+                name="fi-select-lessonType"
+                required
+                className={inputClass}
+                style={baseStyles}
+              >
+                <option value="">Select...</option>
+                <option value="Private">Private</option>
+                <option value="Group">Group</option>
+                <option value="Online">Online</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-              return (
-                <div key={field.name}>
-                  <label
-                    htmlFor={field.name}
-                    className="mb-2 block font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.25em]"
-                    style={{ color: C.lightGray }}
-                  >
-                    {field.label}
-                  </label>
-                  <input
-                    id={field.name}
-                    name={field.name}
-                    type={field.type}
-                    required={field.required}
-                    className="w-full border px-4 py-3 font-[family-name:var(--font-inter)] text-sm outline-none transition-colors duration-300 focus:border-[#C47248]"
-                    style={baseStyles}
-                  />
-                </div>
-              );
-            })}
+            {/* Preferred Schedule (text field) */}
+            <div>
+              <label htmlFor="fi-text-schedule" className={labelClass} style={{ color: C.lightGray }}>
+                Preferred Schedule
+              </label>
+              <input
+                id="fi-text-schedule"
+                name="fi-text-schedule"
+                type="text"
+                className={inputClass}
+                style={baseStyles}
+              />
+            </div>
+
+            {/* Message (text field) */}
+            <div>
+              <label htmlFor="fi-text-message" className={labelClass} style={{ color: C.lightGray }}>
+                Message
+              </label>
+              <textarea
+                id="fi-text-message"
+                name="fi-text-message"
+                rows={5}
+                required
+                className={inputClass}
+                style={baseStyles}
+              />
+            </div>
 
             <div className="pt-4 text-center">
               <button
                 type="submit"
-                className="inline-block border px-12 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2]"
+                disabled={submitting || !sdkReady}
+                className="inline-block border px-12 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2] disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ borderColor: C.gold, color: C.gold, backgroundColor: "transparent" }}
               >
-                Send Message
+                {submitting ? "Sending..." : "Send Message"}
               </button>
             </div>
           </form>
@@ -935,7 +984,7 @@ function ContactSection() {
       </div>
 
       <Toast
-        message="Coming soon"
+        message={toastMsg}
         show={showToast}
         onClose={() => setShowToast(false)}
       />
