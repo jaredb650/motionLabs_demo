@@ -546,7 +546,7 @@ function ServicesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.1 }}
-              className="group relative border p-8 transition-all duration-500"
+              className={`group relative border p-8 transition-all duration-500 ${i === siteContent.services.length - 1 && siteContent.services.length % 2 === 1 ? "sm:col-span-2 sm:max-w-[calc(50%-0.75rem)] sm:mx-auto" : ""}`}
               style={{
                 backgroundColor: C.nearBlack,
                 borderColor: `${C.gold}33`,
