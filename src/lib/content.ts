@@ -49,16 +49,10 @@ export const siteContent = {
       icon: "users",
     },
     {
-      title: "Studio Rental / On-Site Instruction",
+      title: "On-Site Instruction",
       description:
-        "Lucy has her own studio space in Berlin. She also accepts invitations to teach at other studios and events.",
+        "Lucy accepts invitations to teach at other studios and events. Bring expert instruction directly to your venue.",
       icon: "building",
-    },
-    {
-      title: "Online / Zoom Lessons",
-      description:
-        "Virtual instruction available worldwide. Both private 1-on-1 and group formats.",
-      icon: "globe",
     },
     {
       title: "Workshops & Seminars",

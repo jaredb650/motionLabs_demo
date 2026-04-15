@@ -301,7 +301,7 @@ function HeroSection() {
         style={{ y, opacity }}
         className="relative z-10 px-6 text-center"
       >
-        {/* Name */}
+        {/* Business name — primary headline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -309,14 +309,11 @@ function HeroSection() {
           className="font-[family-name:var(--font-cormorant)] text-5xl font-light uppercase leading-none tracking-[0.2em] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl"
           style={{ color: C.white }}
         >
-          {siteContent.name.split(" ").map((word, i) => (
-            <span key={i} className="block">
-              {word}
-            </span>
-          ))}
+          <span className="block">Movement</span>
+          <span className="block">Labs</span>
         </motion.h1>
 
-        {/* Business name */}
+        {/* Name — secondary */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -324,7 +321,7 @@ function HeroSection() {
           className="mt-8 font-[family-name:var(--font-inter)] text-sm uppercase tracking-[0.35em]"
           style={{ color: C.gold }}
         >
-          {siteContent.business}
+          {siteContent.name}
         </motion.p>
 
         {/* Tagline */}
@@ -332,10 +329,10 @@ function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, delay: 1.2 }}
-          className="mx-auto mt-6 max-w-md font-[family-name:var(--font-cormorant)] text-lg font-light italic tracking-wide sm:text-xl"
+          className="mx-auto mt-6 max-w-lg font-[family-name:var(--font-cormorant)] text-lg font-light italic tracking-wide sm:text-xl"
           style={{ color: C.lightGray }}
         >
-          Expert instruction in Salsa, Modern Dance &amp; movement — rooted in science, shaped by artistry
+          Between anatomy and dance, a space emerges where your body can be understood, strengthened, and rediscovered
         </motion.p>
 
         {/* CTA */}
@@ -419,7 +416,7 @@ function AboutIntroSection() {
             className="text-center font-[family-name:var(--font-inter)] text-base leading-relaxed sm:text-lg"
             style={{ color: C.offWhite }}
           >
-            Lucy Marie Schmidt is a Berlin-based dance instructor and licensed physiotherapist with over a decade of training in movement and dance. Whether you&apos;re a complete beginner or a seasoned dancer, she brings a depth of expertise that meets you exactly where you are.
+            Aesthetics meet function. With a holistic approach, Lucy merges movement art and clinical knowledge to support you individually &mdash; for greater ease, stability, and confidence in your body.
           </p>
         </FadeSection>
 
@@ -429,7 +426,7 @@ function AboutIntroSection() {
             className="text-center font-[family-name:var(--font-inter)] text-sm leading-relaxed"
             style={{ color: C.lightGray }}
           >
-            What sets Lucy apart is a rare combination of niche specializations &mdash; Salsa On 1, Salsa On 2, and Modern Dance &mdash; learned from world-class instructors across New York, Toronto, Buenos Aires, and Berlin. As both a physiotherapist and a dancer, she doesn&apos;t just teach steps &mdash; she understands how your body moves, how to prevent injury, and how to unlock your full potential as a mover.
+            Her work connects physiological understanding with the freedom of dance to help you build lasting strength and restore balance. She guides you through this process with care, knowledge, and a deep passion for movement &mdash; decoding movement patterns to unlock your body&apos;s full potential.
           </p>
         </FadeSection>
       </div>
