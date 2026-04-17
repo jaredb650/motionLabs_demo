@@ -65,10 +65,10 @@ function FadeSection({
 }
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Qualifications", href: "#qualifications" },
-  { label: "Credentials", href: "#credentials" },
+  { label: "The Lab", href: "#about" },
+  { label: "Lessons", href: "#lessons" },
+  { label: "Studio", href: "#studio" },
+  { label: "Coach", href: "#coach" },
   { label: "Gallery", href: "#gallery" },
   { label: "Contact", href: "#contact" },
 ];
@@ -261,24 +261,43 @@ function HeroSection() {
       style={{ backgroundColor: C.black }}
     >
 
-      {/* Hero background image — cinematic monochrome */}
+      {/* Hero background — still photo, then fades into class video */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2.5, ease: "easeOut" }}
         style={{ y }}
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
       >
-        <img
+        {/* Photo layer: fades in first, out as the video takes over */}
+        <motion.img
           src={img("/images/hero/lucy_f4.webp")}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-[center_top]"
-          style={{
-            filter: "sepia(0.15) contrast(1.05) brightness(1.02)",
-            opacity: 0.35,
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.4, 0.4, 0] }}
+          transition={{
+            times: [0, 0.12, 0.42, 0.58],
+            duration: 6,
+            ease: "easeInOut",
           }}
+          className="absolute inset-0 h-full w-full object-cover object-[center_top]"
+          style={{ filter: "sepia(0.15) contrast(1.05) brightness(1.02)" }}
         />
+        {/* Video layer: student class footage, fades in after the photo */}
+        <motion.video
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.45 }}
+          transition={{ delay: 3.2, duration: 2, ease: "easeOut" }}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={img("/images/hero/lucy_f4.webp")}
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          style={{ filter: "sepia(0.12) contrast(1.04) brightness(1.0) saturate(0.95)" }}
+        >
+          <source src={img("/images/video/hero-class.webm")} type="video/webm" />
+          <source src={img("/images/video/hero-class.mp4")} type="video/mp4" />
+        </motion.video>
       </motion.div>
 
       {/* Spotlight / vignette */}
@@ -301,45 +320,65 @@ function HeroSection() {
         style={{ y, opacity }}
         className="relative z-10 px-6 text-center"
       >
-        {/* Business name — primary headline */}
+        {/* Small kicker */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, delay: 0.4 }}
+          className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.4em]"
+          style={{ color: C.gold }}
+        >
+          A Berlin Dance Lab
+        </motion.p>
+
+        {/* Brand wordmark */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="font-[family-name:var(--font-cormorant)] text-5xl font-light uppercase leading-none tracking-[0.2em] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl"
+          className="mt-6 font-[family-name:var(--font-cormorant)] text-5xl font-light uppercase leading-none tracking-[0.2em] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl"
           style={{ color: C.white }}
         >
           <span className="block">Movement</span>
           <span className="block">Labs</span>
         </motion.h1>
 
-        {/* Name — secondary */}
+        {/* Philosophy — now the primary voice */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 0.8 }}
-          className="mt-8 font-[family-name:var(--font-inter)] text-sm uppercase tracking-[0.35em]"
-          style={{ color: C.gold }}
+          transition={{ duration: 1.6, delay: 1 }}
+          className="mx-auto mt-10 max-w-xl font-[family-name:var(--font-cormorant)] text-xl font-light italic leading-relaxed tracking-wide sm:text-2xl"
+          style={{ color: C.offWhite }}
         >
-          {siteContent.name}
+          Between anatomy and dance — a space to understand your body, train it with care, and rediscover what it can do.
         </motion.p>
 
-        {/* Tagline */}
+        {/* Gold rule */}
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ duration: 1.2, delay: 1.6 }}
+          className="mx-auto mt-10 h-px w-16 origin-center"
+          style={{ backgroundColor: C.gold }}
+        />
+
+        {/* Name — quietly attributed */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 1.2 }}
-          className="mx-auto mt-6 max-w-lg font-[family-name:var(--font-cormorant)] text-lg font-light italic tracking-wide sm:text-xl"
-          style={{ color: C.lightGray }}
+          transition={{ duration: 1.5, delay: 1.9 }}
+          className="mt-6 font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
+          style={{ color: C.midGray }}
         >
-          Between anatomy and dance, a space emerges where your body can be understood, strengthened, and rediscovered
+          with {siteContent.name}
         </motion.p>
 
         {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 1.8 }}
+          transition={{ duration: 1.2, delay: 2.2 }}
           className="mt-12"
         >
           <a
@@ -387,13 +426,13 @@ function AboutIntroSection() {
             className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
             style={{ color: C.gold }}
           >
-            About
+            The Lab
           </p>
           <h2
             className="mt-4 font-[family-name:var(--font-cormorant)] text-4xl font-light uppercase tracking-[0.15em] sm:text-5xl"
             style={{ color: C.white }}
           >
-            Meet Your Coach
+            Aesthetics Meet Function
           </h2>
           <GoldDivider className="mt-8" />
         </FadeSection>
@@ -410,21 +449,21 @@ function AboutIntroSection() {
 
         <GoldDivider className="mt-12" />
 
-        {/* What she does for you */}
+        {/* Philosophy — paragraph 1 */}
         <FadeSection delay={0.3} className="mt-12">
           <p
             className="text-center font-[family-name:var(--font-inter)] text-base leading-relaxed sm:text-lg"
             style={{ color: C.offWhite }}
           >
-            Aesthetics meet function. With a holistic approach, Lucy merges movement art and clinical knowledge to support you individually &mdash; for greater ease, stability, and confidence in your body.
+            Aesthetics meet function. With a holistic approach, Lucy merges movement, art and clinical knowledge to support you individually &mdash; for greater ease, stability, and confidence in your body.
           </p>
         </FadeSection>
 
-        {/* Her unique edge as a coach */}
-        <FadeSection delay={0.15} className="mt-10">
+        {/* Philosophy — paragraph 2 (matched styling to paragraph 1) */}
+        <FadeSection delay={0.45} className="mt-10">
           <p
-            className="text-center font-[family-name:var(--font-inter)] text-sm leading-relaxed"
-            style={{ color: C.lightGray }}
+            className="text-center font-[family-name:var(--font-inter)] text-base leading-relaxed sm:text-lg"
+            style={{ color: C.offWhite }}
           >
             Her work connects physiological understanding with the freedom of dance to help you build lasting strength and restore balance. She guides you through this process with care, knowledge, and a deep passion for movement &mdash; decoding movement patterns to unlock your body&apos;s full potential.
           </p>
@@ -440,7 +479,7 @@ function AboutIntroSection() {
 function AboutDetailsSection() {
   return (
     <section
-      id="qualifications"
+      id="coach"
       className="relative py-28 sm:py-36"
       style={{ backgroundColor: C.nearBlack }}
     >
@@ -457,22 +496,63 @@ function AboutDetailsSection() {
             className="mt-4 font-[family-name:var(--font-cormorant)] text-4xl font-light uppercase tracking-[0.15em] sm:text-5xl"
             style={{ color: C.white }}
           >
-            Why Train With Lucy
+            Meet Your Coach
           </h2>
           <GoldDivider className="mt-8" />
         </FadeSection>
 
-        {/* Depth of training + Clinical edge */}
-        <FadeSection delay={0.15} className="mt-16 space-y-8">
-          <p
-            className="font-[family-name:var(--font-inter)] text-sm leading-relaxed"
-            style={{ color: C.lightGray }}
+        {/* Portrait */}
+        <FadeSection delay={0.1} className="mt-12 flex justify-center">
+          <div
+            className="group relative overflow-hidden"
+            style={{
+              width: "min(22rem, 80vw)",
+              aspectRatio: "3 / 4",
+              backgroundColor: C.black,
+            }}
           >
-            Lucy didn&apos;t just learn one style in one city &mdash; she sought out the best teachers globally and synthesized multiple traditions into a teaching methodology that&apos;s uniquely her own. From the Martha Graham School in New York to Danceworks Berlin, from Canadian Dance Company in Toronto to studios in Buenos Aires and Bilbao, her training spans continents and disciplines. In Berlin, this combination of niche Latin and Modern dance expertise is extremely rare.
+            <img
+              src={img("/images/gallery/lucy_d7.webp")}
+              alt="Portrait of Lucy Marie Schmidt in warm afternoon light"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-[1.03]"
+              style={{ filter: "sepia(0.08) contrast(1.03) saturate(1.02)" }}
+            />
+            {/* Thin gold frame */}
+            <div
+              className="pointer-events-none absolute inset-0 border"
+              style={{ borderColor: `${C.gold}40` }}
+              aria-hidden="true"
+            />
+            {/* Warm inner stroke on hover */}
+            <div
+              className="pointer-events-none absolute inset-[6px] border opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style={{ borderColor: `${C.gold}99` }}
+              aria-hidden="true"
+            />
+          </div>
+        </FadeSection>
+
+        {/* Name + role */}
+        <FadeSection delay={0.2} className="mt-6 text-center">
+          <p
+            className="font-[family-name:var(--font-cormorant)] text-xl font-light uppercase tracking-[0.2em]"
+            style={{ color: C.white }}
+          >
+            {siteContent.name}
           </p>
           <p
-            className="font-[family-name:var(--font-inter)] text-sm leading-relaxed"
-            style={{ color: C.lightGray }}
+            className="mt-2 font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.3em]"
+            style={{ color: C.gold }}
+          >
+            Dance Instructor &middot; Physiotherapist
+          </p>
+        </FadeSection>
+
+        {/* Clinical edge */}
+        <FadeSection delay={0.3} className="mt-12">
+          <p
+            className="font-[family-name:var(--font-inter)] text-base leading-relaxed sm:text-lg"
+            style={{ color: C.offWhite }}
           >
             With a Bachelor of Science in Physiotherapy and certifications in STOTT Pilates and Progressive Ballet Technique, Lucy brings a clinical understanding of the human body into every class. She doesn&apos;t just teach movement &mdash; she understands biomechanics, injury prevention, and physical rehabilitation, giving her students a safer, smarter, and more effective training experience.
           </p>
@@ -517,28 +597,28 @@ function AboutDetailsSection() {
 function ServicesSection() {
   return (
     <section
-      id="services"
+      id="lessons"
       className="relative py-28 sm:py-36"
       style={{ backgroundColor: C.black }}
     >
-      <div className="mx-auto max-w-5xl px-6 lg:px-10">
+      <div className="mx-auto max-w-6xl px-6 lg:px-10">
         <FadeSection className="text-center">
           <p
             className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
             style={{ color: C.gold }}
           >
-            Services
+            Offerings
           </p>
           <h2
             className="mt-4 font-[family-name:var(--font-cormorant)] text-4xl font-light uppercase tracking-[0.15em] sm:text-5xl"
             style={{ color: C.white }}
           >
-            Offerings
+            Lessons
           </h2>
           <GoldDivider className="mt-8" />
         </FadeSection>
 
-        <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-8">
           {siteContent.services.map((service, i) => (
             <motion.div
               key={service.title}
@@ -546,7 +626,7 @@ function ServicesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.1 }}
-              className={`group relative border p-8 transition-all duration-500 ${i === siteContent.services.length - 1 && siteContent.services.length % 2 === 1 ? "sm:col-span-2 sm:max-w-[calc(50%-0.75rem)] sm:mx-auto" : ""}`}
+              className="group relative flex flex-col border p-8 transition-all duration-500 sm:p-10"
               style={{
                 backgroundColor: C.nearBlack,
                 borderColor: `${C.gold}33`,
@@ -560,14 +640,26 @@ function ServicesSection() {
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
+              {/* Small index numeral */}
+              <span
+                className="font-[family-name:var(--font-cormorant)] text-xs uppercase tracking-[0.3em]"
+                style={{ color: C.gold }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <h3
-                className="font-[family-name:var(--font-cormorant)] text-xl font-light uppercase tracking-[0.1em]"
+                className="mt-3 font-[family-name:var(--font-cormorant)] text-2xl font-light uppercase leading-tight tracking-[0.08em]"
                 style={{ color: C.white }}
               >
                 {service.title}
               </h3>
+              <div
+                className="mt-5 h-px w-10"
+                style={{ backgroundColor: `${C.gold}66` }}
+                aria-hidden="true"
+              />
               <p
-                className="mt-4 font-[family-name:var(--font-inter)] text-sm leading-relaxed"
+                className="mt-5 font-[family-name:var(--font-inter)] text-sm leading-relaxed"
                 style={{ color: C.midGray }}
               >
                 {service.description}
@@ -699,6 +791,131 @@ function CredentialsSection() {
             ))}
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* =============================================================
+   IN THE STUDIO — student / class photos
+   ============================================================= */
+type StudioPhoto = {
+  src: string;
+  alt: string;
+  // tailwind span on md+ grid (4 columns) and aspect ratio
+  span: string;
+  aspect: string;
+};
+
+const studioPhotos: StudioPhoto[] = [
+  { src: img("/images/students/students_02_lucy_smiling.webp"), alt: "Lucy smiling while teaching a salsa class with students in soft focus behind", span: "md:col-span-2 md:row-span-2", aspect: "aspect-[3/4]" },
+  { src: img("/images/students/students_01_lineup.webp"), alt: "Students lined up in the studio practicing salsa footwork", span: "md:col-span-2", aspect: "aspect-[4/3]" },
+  { src: img("/images/students/students_07_lucy_group.webp"), alt: "Lucy mid-demonstration with students watching in the background", span: "md:col-span-1", aspect: "aspect-[3/4]" },
+  { src: img("/images/students/students_08_lucy_teaching.webp"), alt: "Lucy teaching a styling cue, students in line behind her", span: "md:col-span-1", aspect: "aspect-[3/4]" },
+  { src: img("/images/students/students_10_modern_attitude.webp"), alt: "Lucy in a Graham-inspired modern dance attitude pose", span: "md:col-span-2", aspect: "aspect-[4/3]" },
+  { src: img("/images/students/students_04_line_practice.webp"), alt: "Lucy demonstrating styling at the mirror while students watch", span: "md:col-span-2", aspect: "aspect-[3/4]" },
+  { src: img("/images/students/students_03_studio_wide.webp"), alt: "Wide view of the dance studio with students gathered around", span: "md:col-span-2", aspect: "aspect-[3/4]" },
+  { src: img("/images/students/students_06_lucy_styling.webp"), alt: "Lucy opening her arms in a body-movement drill for Salsa On 2", span: "md:col-span-2", aspect: "aspect-[3/4]" },
+  { src: img("/images/students/students_05_mirror_practice.webp"), alt: "Students practicing across the mirror in open studio space", span: "md:col-span-2", aspect: "aspect-[4/3]" },
+  { src: img("/images/students/students_09_performance.webp"), alt: "Ensemble performance in flowing costumes under theatrical light", span: "md:col-span-2", aspect: "aspect-[3/4]" },
+];
+
+function StudioSection() {
+  return (
+    <section
+      id="studio"
+      className="relative overflow-hidden py-28 sm:py-36"
+      style={{ backgroundColor: C.nearBlack }}
+    >
+      {/* Soft terracotta wash in the corners to distinguish from other sections */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `radial-gradient(ellipse 60% 40% at 10% 0%, ${C.gold}10 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 100% 100%, ${C.gold}10 0%, transparent 60%)`,
+        }}
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
+        <FadeSection className="text-center">
+          <p
+            className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
+            style={{ color: C.gold }}
+          >
+            Classes
+          </p>
+          <h2
+            className="mt-4 font-[family-name:var(--font-cormorant)] text-4xl font-light uppercase tracking-[0.15em] sm:text-5xl"
+            style={{ color: C.white }}
+          >
+            In the Studio
+          </h2>
+          <GoldDivider className="mt-8" />
+        </FadeSection>
+
+        <FadeSection delay={0.2} className="mx-auto mt-10 max-w-2xl">
+          <p
+            className="text-center font-[family-name:var(--font-cormorant)] text-lg font-light italic leading-relaxed sm:text-xl"
+            style={{ color: C.lightGray }}
+          >
+            Week after week, the room fills — dancers of all levels working through footwork, styling, and the small details that turn movement into craft.
+          </p>
+        </FadeSection>
+
+        {/* Editorial asymmetric grid (4 cols on md+), dense flow fills gaps */}
+        <div className="mt-16 grid grid-flow-dense auto-rows-[14rem] grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-4 md:auto-rows-[18rem] md:gap-6">
+          {studioPhotos.map((photo, i) => (
+            <motion.figure
+              key={photo.src}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.8, delay: i * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
+              className={`group relative overflow-hidden ${photo.span}`}
+              style={{ backgroundColor: C.black }}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] group-hover:scale-[1.04]"
+                style={{ filter: "sepia(0.05) contrast(1.03) saturate(0.98)" }}
+              />
+              {/* Warm bottom wash */}
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 opacity-60 transition-opacity duration-500 group-hover:opacity-20"
+                style={{
+                  background: `linear-gradient(to top, ${C.nearBlack}cc 0%, transparent 100%)`,
+                }}
+                aria-hidden="true"
+              />
+              {/* Thin inset border on hover */}
+              <div
+                className="pointer-events-none absolute inset-[6px] border opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{ borderColor: `${C.gold}80` }}
+                aria-hidden="true"
+              />
+            </motion.figure>
+          ))}
+        </div>
+
+        {/* Closing attribution + CTA to lessons */}
+        <FadeSection delay={0.2} className="mt-16 text-center">
+          <GoldDivider />
+          <p
+            className="mt-8 font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.3em]"
+            style={{ color: C.midGray }}
+          >
+            Weekly group classes &middot; Private sessions &middot; Berlin
+          </p>
+          <a
+            href="#contact"
+            className="mt-8 inline-block border px-10 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2]"
+            style={{ borderColor: C.gold, color: C.gold }}
+          >
+            Join a Class
+          </a>
+        </FadeSection>
       </div>
     </section>
   );
@@ -1009,6 +1226,7 @@ export default function DemoEPage() {
       <HeroSection />
       <AboutIntroSection />
       <ServicesSection />
+      <StudioSection />
       <AboutDetailsSection />
       <CredentialsSection />
       <GallerySection />

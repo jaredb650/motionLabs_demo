@@ -6,9 +6,9 @@ export const siteContent = {
   instagram: "@lucymarie.s",
 
   styles: [
+    "Modern Dance",
     "Salsa On 1",
     "Salsa On 2",
-    "Modern Dance",
   ],
 
   about: {
@@ -16,9 +16,9 @@ export const siteContent = {
     intro:
       "Berlin-based multidisciplinary dance instructor and licensed physiotherapist with 10+ years in dance studies and movement practice.",
     specialization:
-      "Specializing in Salsa On 1, Salsa On 2, and Modern Dance — a rare combination of niche expertise that positions her uniquely in Berlin's dance scene.",
+      "Specializing in Modern Dance, Salsa On 1, and Salsa On 2 — a rare combination of niche expertise that positions her uniquely in Berlin's dance scene.",
     uniqueness:
-      "Her wide breadth of expertise across different forms of Latin dance and Modern dance, learned from specialist instructors across the world, is what sets her apart. She sought out the best teachers globally and synthesized multiple traditions into her own methodology.",
+      "Her wide breadth of expertise across Modern dance and different forms of Latin dance, learned from specialist instructors across the world, is what sets her apart. She sought out the best teachers globally and synthesized multiple traditions into her own methodology.",
     clinical:
       "She merges clinical understanding of the human body with artistic dance training — she doesn't just teach movement, she understands biomechanics, injury prevention, and physical rehabilitation.",
     highlights: [
@@ -28,43 +28,30 @@ export const siteContent = {
       "Progressive Ballet Technique trained",
       "Bachelor of Science in Physiotherapy from IB-Hochschule University, Berlin (2020)",
       "Thesis: \"Short-term effects of dance on postural control and step length in Parkinson's disease\"",
-      "Trained internationally — New York City, Toronto (Canadian Dance Company, 2014), Buenos Aires, Bilbao",
       "Mentored by Sarah Balzat, internationally recognized dance educator",
-      "Performed at the German Bundestag Open Day (Sept 2024) — salsa instruction",
+      "Salsa instruction at the German Bundestag Open Day (Sept 2024)",
       "Currently teaches weekly at Cumbancha in Berlin (since Jan 2026)",
     ],
   },
 
   services: [
     {
+      title: "Modern Dance",
+      description:
+        "Rooted in both Graham and Horton technique. Both emphasize moving from the core and connecting physicality with emotionality. While developing technique in class we will experiment with basic human movements formed into principles, such as Contraction and Release, and Spirals.",
+      icon: "flame",
+    },
+    {
+      title: "Salsa",
+      description:
+        "Two weekly classes: Salsa On 1 — Ladies Styling, focused on posture, lines, and feminine movement quality; and Salsa On 2 — Body Movement, working through isolation, body rolls, and the subtle weight shifts that make On 2 feel alive.",
+      icon: "pulse",
+    },
+    {
       title: "Private 1-on-1 Lessons",
       description:
-        "Personalized instruction at her private studio in Berlin (Moabit area). Tailored to individual goals, all levels welcome.",
+        "One-on-one sessions at her private studio in Berlin. Tailored to whatever you want to work on — technique, a specific piece, or building confidence in a style. All levels welcome.",
       icon: "user",
-    },
-    {
-      title: "Group Classes",
-      description:
-        "Small group sessions (5–9 students). Currently teaching Salsa Ladies Styling (On1), Salsa Body Movement (On2), Modern Dance (Graham & Horton), and Latin Dance Workout.",
-      icon: "users",
-    },
-    {
-      title: "On-Site Instruction",
-      description:
-        "Lucy accepts invitations to teach at other studios and events. Bring expert instruction directly to your venue.",
-      icon: "building",
-    },
-    {
-      title: "Workshops & Seminars",
-      description:
-        "Intensive masterclasses and multi-day workshops. Available for booking at events, dance festivals, and studios.",
-      icon: "calendar",
-    },
-    {
-      title: "Custom Arrangements",
-      description:
-        "Anything else can be discussed. Reach out via the contact form.",
-      icon: "sparkles",
     },
   ],
 
@@ -99,7 +86,7 @@ export const siteContent = {
 
   navLinks: [
     { label: "About", href: "#about" },
-    { label: "Services", href: "#services" },
+    { label: "Lessons", href: "#lessons" },
     { label: "Credentials", href: "#credentials" },
     { label: "Gallery", href: "#gallery" },
     { label: "Contact", href: "#contact" },
