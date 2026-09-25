@@ -27,9 +27,6 @@ const C = {
    ───────────────────────────────────────────── */
 const PHOTO_FILTER = "contrast(1.08) saturate(1.08) brightness(1.02) sepia(0.06)";
 
-// Experimental: blur the people behind Lucy in the class photos. Set to false to remove.
-const SOFTEN_BACKGROUND = true;
-
 /* ─────────────────────────────────────────────
    FILM GRAIN OVERLAY (inline SVG data URI)
    ───────────────────────────────────────────── */
@@ -868,21 +865,19 @@ type StudioPhoto = {
   mobile: string;
   // where the subject's face sits in the photo — drives object-position so heads never get cropped
   focus: string;
-  // centre of the sharp area when SOFTEN_BACKGROUND is on (omit for wide shots with no single subject)
-  soften?: string;
 };
 
 const PORTRAIT = "aspect-[3/4]";
 const LANDSCAPE = "col-span-2 aspect-[4/3]";
 
 const studioPhotos: StudioPhoto[] = [
-  { src: img("/images/students/students_02_lucy_smiling.webp"), alt: "Lucy smiling while teaching a salsa class with students in soft focus behind", span: "md:col-span-2 md:row-span-2", mobile: PORTRAIT, focus: "50% 25%", soften: "50% 50%" },
+  { src: img("/images/students/students_02_lucy_smiling.webp"), alt: "Lucy smiling while teaching a salsa class with students behind her", span: "md:col-span-2 md:row-span-2", mobile: PORTRAIT, focus: "50% 25%" },
   { src: img("/images/students/students_01_lineup.webp"), alt: "Students lined up in the studio practicing salsa footwork", span: "md:col-span-2", mobile: PORTRAIT, focus: "60% 30%" },
-  { src: img("/images/students/students_08_lucy_teaching.webp"), alt: "Lucy teaching a styling cue, students in line behind her", span: "md:col-span-2", mobile: PORTRAIT, focus: "65% 22%", soften: "68% 50%" },
+  { src: img("/images/students/students_08_lucy_teaching.webp"), alt: "Lucy teaching a styling cue, students in line behind her", span: "md:col-span-2", mobile: PORTRAIT, focus: "65% 22%" },
   { src: img("/images/students/students_10_modern_attitude.webp"), alt: "Lucy in a Graham-inspired modern dance attitude pose", span: "md:col-span-2", mobile: LANDSCAPE, focus: "40% 50%" },
   { src: img("/images/students/students_04_line_practice.webp"), alt: "Lucy demonstrating styling at the mirror while students watch", span: "md:col-span-2", mobile: PORTRAIT, focus: "35% 24%" },
   { src: img("/images/students/students_03_studio_wide.webp"), alt: "Wide view of the dance studio with students gathered around", span: "md:col-span-2", mobile: PORTRAIT, focus: "50% 42%" },
-  { src: img("/images/students/students_06_lucy_styling.webp"), alt: "Lucy opening her arms in a body-movement drill for Salsa On 2", span: "md:col-span-2", mobile: PORTRAIT, focus: "45% 24%", soften: "45% 50%" },
+  { src: img("/images/students/students_06_lucy_styling.webp"), alt: "Lucy opening her arms in a body-movement drill for Salsa On 2", span: "md:col-span-2", mobile: PORTRAIT, focus: "45% 24%" },
 ];
 
 function StudioSection() {
@@ -937,17 +932,6 @@ function StudioSection() {
                 className="absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] group-hover:scale-[1.04]"
                 style={{ filter: PHOTO_FILTER, objectPosition: photo.focus }}
               />
-              {/* Background softening — blurs everything outside an ellipse around Lucy */}
-              {SOFTEN_BACKGROUND && photo.soften && (
-                <div
-                  className="pointer-events-none absolute inset-0 backdrop-blur-[1px] md:backdrop-blur-[2.5px]"
-                  style={{
-                    maskImage: `radial-gradient(ellipse 45% 72% at ${photo.soften}, transparent 65%, black 100%)`,
-                    WebkitMaskImage: `radial-gradient(ellipse 45% 72% at ${photo.soften}, transparent 65%, black 100%)`,
-                  }}
-                  aria-hidden="true"
-                />
-              )}
               {/* Warm bottom wash */}
               <div
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 opacity-60 transition-opacity duration-500 group-hover:opacity-20"
