@@ -21,6 +21,16 @@ const C = {
 };
 
 /* ─────────────────────────────────────────────
+   PHOTO TREATMENT
+   One shared grade for every photo + video so the site reads as a set:
+   a light contrast/saturation lift with just a touch of warmth.
+   ───────────────────────────────────────────── */
+const PHOTO_FILTER = "contrast(1.08) saturate(1.08) brightness(1.02) sepia(0.06)";
+
+// Experimental: blur the people behind Lucy in the class photos. Set to false to remove.
+const SOFTEN_BACKGROUND = true;
+
+/* ─────────────────────────────────────────────
    FILM GRAIN OVERLAY (inline SVG data URI)
    ───────────────────────────────────────────── */
 const grainSvg = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`;
@@ -279,7 +289,7 @@ function HeroSection() {
             ease: "easeInOut",
           }}
           className="absolute inset-0 h-full w-full object-cover object-[center_top]"
-          style={{ filter: "sepia(0.15) contrast(1.05) brightness(1.02)" }}
+          style={{ filter: PHOTO_FILTER }}
         />
         {/* Video layer: student class footage, fades in after the photo */}
         <motion.video
@@ -293,7 +303,7 @@ function HeroSection() {
           preload="metadata"
           poster={img("/images/hero/lucy_f4.webp")}
           className="absolute inset-0 h-full w-full object-cover object-center"
-          style={{ filter: "sepia(0.12) contrast(1.04) brightness(1.0) saturate(0.95)" }}
+          style={{ filter: PHOTO_FILTER }}
         >
           <source src={img("/images/video/hero-class.webm")} type="video/webm" />
           <source src={img("/images/video/hero-class.mp4")} type="video/mp4" />
@@ -316,6 +326,15 @@ function HeroSection() {
         aria-hidden="true"
       />
 
+      {/* Phones only: the dancers sit directly behind the copy, so add a cream wash for legibility */}
+      <div
+        className="pointer-events-none absolute inset-0 sm:hidden"
+        style={{
+          background: `linear-gradient(to bottom, rgba(250,247,242,0.2) 0%, rgba(250,247,242,0.6) 35%, rgba(250,247,242,0.72) 65%, rgba(250,247,242,0.3) 100%)`,
+        }}
+        aria-hidden="true"
+      />
+
       <motion.div
         style={{ y, opacity }}
         className="relative z-10 px-6 text-center"
@@ -328,7 +347,7 @@ function HeroSection() {
           className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.4em]"
           style={{ color: C.gold }}
         >
-          A Berlin Dance Lab
+          Berlin based
         </motion.p>
 
         {/* Brand wordmark */}
@@ -422,17 +441,11 @@ function AboutIntroSection() {
       <div className="mx-auto max-w-4xl px-6 lg:px-10">
         {/* Section header */}
         <FadeSection className="text-center">
-          <p
-            className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: C.gold }}
-          >
-            The Lab
-          </p>
           <h2
-            className="mt-4 font-[family-name:var(--font-cormorant)] text-4xl font-light uppercase tracking-[0.15em] sm:text-5xl"
+            className="font-[family-name:var(--font-cormorant)] text-4xl font-light uppercase tracking-[0.15em] sm:text-5xl"
             style={{ color: C.white }}
           >
-            Aesthetics Meet Function
+            The Lab
           </h2>
           <GoldDivider className="mt-8" />
         </FadeSection>
@@ -440,10 +453,19 @@ function AboutIntroSection() {
         {/* Specializations */}
         <FadeSection delay={0.2} className="mt-16 text-center">
           <p
-            className="font-[family-name:var(--font-cormorant)] text-xl font-light uppercase tracking-[0.2em] sm:text-2xl"
+            className="flex flex-col items-center gap-3 font-[family-name:var(--font-cormorant)] text-xl lining-nums font-light uppercase tracking-[0.2em] sm:flex-row sm:justify-center sm:gap-5 sm:text-2xl"
             style={{ color: C.gold }}
           >
-            {siteContent.styles.join(" \u2022 ")}
+            {siteContent.styles.map((style, i) => (
+              <span key={style} className="flex items-center gap-5 whitespace-nowrap">
+                {i > 0 && (
+                  <span className="hidden sm:inline" aria-hidden="true">
+                    &bull;
+                  </span>
+                )}
+                {style}
+              </span>
+            ))}
           </p>
         </FadeSection>
 
@@ -515,7 +537,7 @@ function AboutDetailsSection() {
               src={img("/images/gallery/lucy_d7.webp")}
               alt="Portrait of Lucy Marie Schmidt in warm afternoon light"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-[1.03]"
-              style={{ filter: "sepia(0.08) contrast(1.03) saturate(1.02)" }}
+              style={{ filter: PHOTO_FILTER }}
             />
             {/* Thin gold frame */}
             <div
@@ -673,6 +695,44 @@ function ServicesSection() {
 }
 
 /* =============================================================
+   ON STAGE — show photo between the coach credentials and the timeline
+   ============================================================= */
+function ShowPhotoSection() {
+  return (
+    <section
+      aria-label="On stage"
+      className="relative pb-4"
+      style={{ backgroundColor: C.nearBlack }}
+    >
+      <div className="mx-auto max-w-md px-6 lg:px-0">
+        <FadeSection>
+          <figure>
+            <div
+              className="relative aspect-[4/5] overflow-hidden"
+              style={{ backgroundColor: C.black }}
+            >
+              <img
+                src={img("/images/students/students_09_performance.webp")}
+                alt="Lucy performing on stage with an ensemble in flowing costumes under violet theatrical light"
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
+                style={{ filter: PHOTO_FILTER, objectPosition: "55% 32%" }}
+              />
+            </div>
+            <figcaption
+              className="mt-5 text-center font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
+              style={{ color: C.gold }}
+            >
+              On Stage
+            </figcaption>
+          </figure>
+        </FadeSection>
+      </div>
+    </section>
+  );
+}
+
+/* =============================================================
    CREDENTIALS / TIMELINE
    ============================================================= */
 function CredentialsSection() {
@@ -802,22 +862,27 @@ function CredentialsSection() {
 type StudioPhoto = {
   src: string;
   alt: string;
-  // tailwind span on md+ grid (4 columns) and aspect ratio
+  // tailwind span on the md+ grid (4 columns)
   span: string;
-  aspect: string;
+  // cell shape in the 2-column mobile grid
+  mobile: string;
+  // where the subject's face sits in the photo — drives object-position so heads never get cropped
+  focus: string;
+  // centre of the sharp area when SOFTEN_BACKGROUND is on (omit for wide shots with no single subject)
+  soften?: string;
 };
 
+const PORTRAIT = "aspect-[3/4]";
+const LANDSCAPE = "col-span-2 aspect-[4/3]";
+
 const studioPhotos: StudioPhoto[] = [
-  { src: img("/images/students/students_02_lucy_smiling.webp"), alt: "Lucy smiling while teaching a salsa class with students in soft focus behind", span: "md:col-span-2 md:row-span-2", aspect: "aspect-[3/4]" },
-  { src: img("/images/students/students_01_lineup.webp"), alt: "Students lined up in the studio practicing salsa footwork", span: "md:col-span-2", aspect: "aspect-[4/3]" },
-  { src: img("/images/students/students_07_lucy_group.webp"), alt: "Lucy mid-demonstration with students watching in the background", span: "md:col-span-1", aspect: "aspect-[3/4]" },
-  { src: img("/images/students/students_08_lucy_teaching.webp"), alt: "Lucy teaching a styling cue, students in line behind her", span: "md:col-span-1", aspect: "aspect-[3/4]" },
-  { src: img("/images/students/students_10_modern_attitude.webp"), alt: "Lucy in a Graham-inspired modern dance attitude pose", span: "md:col-span-2", aspect: "aspect-[4/3]" },
-  { src: img("/images/students/students_04_line_practice.webp"), alt: "Lucy demonstrating styling at the mirror while students watch", span: "md:col-span-2", aspect: "aspect-[3/4]" },
-  { src: img("/images/students/students_03_studio_wide.webp"), alt: "Wide view of the dance studio with students gathered around", span: "md:col-span-2", aspect: "aspect-[3/4]" },
-  { src: img("/images/students/students_06_lucy_styling.webp"), alt: "Lucy opening her arms in a body-movement drill for Salsa On 2", span: "md:col-span-2", aspect: "aspect-[3/4]" },
-  { src: img("/images/students/students_05_mirror_practice.webp"), alt: "Students practicing across the mirror in open studio space", span: "md:col-span-2", aspect: "aspect-[4/3]" },
-  { src: img("/images/students/students_09_performance.webp"), alt: "Ensemble performance in flowing costumes under theatrical light", span: "md:col-span-2", aspect: "aspect-[3/4]" },
+  { src: img("/images/students/students_02_lucy_smiling.webp"), alt: "Lucy smiling while teaching a salsa class with students in soft focus behind", span: "md:col-span-2 md:row-span-2", mobile: PORTRAIT, focus: "50% 25%", soften: "50% 50%" },
+  { src: img("/images/students/students_01_lineup.webp"), alt: "Students lined up in the studio practicing salsa footwork", span: "md:col-span-2", mobile: PORTRAIT, focus: "60% 30%" },
+  { src: img("/images/students/students_08_lucy_teaching.webp"), alt: "Lucy teaching a styling cue, students in line behind her", span: "md:col-span-2", mobile: PORTRAIT, focus: "65% 22%", soften: "68% 50%" },
+  { src: img("/images/students/students_10_modern_attitude.webp"), alt: "Lucy in a Graham-inspired modern dance attitude pose", span: "md:col-span-2", mobile: LANDSCAPE, focus: "40% 50%" },
+  { src: img("/images/students/students_04_line_practice.webp"), alt: "Lucy demonstrating styling at the mirror while students watch", span: "md:col-span-2", mobile: PORTRAIT, focus: "35% 24%" },
+  { src: img("/images/students/students_03_studio_wide.webp"), alt: "Wide view of the dance studio with students gathered around", span: "md:col-span-2", mobile: PORTRAIT, focus: "50% 42%" },
+  { src: img("/images/students/students_06_lucy_styling.webp"), alt: "Lucy opening her arms in a body-movement drill for Salsa On 2", span: "md:col-span-2", mobile: PORTRAIT, focus: "45% 24%", soften: "45% 50%" },
 ];
 
 function StudioSection() {
@@ -853,17 +918,8 @@ function StudioSection() {
           <GoldDivider className="mt-8" />
         </FadeSection>
 
-        <FadeSection delay={0.2} className="mx-auto mt-10 max-w-2xl">
-          <p
-            className="text-center font-[family-name:var(--font-cormorant)] text-lg font-light italic leading-relaxed sm:text-xl"
-            style={{ color: C.lightGray }}
-          >
-            Week after week, the room fills — dancers of all levels working through footwork, styling, and the small details that turn movement into craft.
-          </p>
-        </FadeSection>
-
         {/* Editorial asymmetric grid (4 cols on md+), dense flow fills gaps */}
-        <div className="mt-16 grid grid-flow-dense auto-rows-[14rem] grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-4 md:auto-rows-[18rem] md:gap-6">
+        <div className="mt-16 grid grid-flow-dense grid-cols-2 gap-3 sm:gap-5 md:auto-rows-[18rem] md:grid-cols-4 md:gap-6">
           {studioPhotos.map((photo, i) => (
             <motion.figure
               key={photo.src}
@@ -871,7 +927,7 @@ function StudioSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.8, delay: i * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
-              className={`group relative overflow-hidden ${photo.span}`}
+              className={`group relative overflow-hidden ${photo.mobile} md:aspect-auto ${photo.span}`}
               style={{ backgroundColor: C.black }}
             >
               <img
@@ -879,8 +935,19 @@ function StudioSection() {
                 alt={photo.alt}
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] group-hover:scale-[1.04]"
-                style={{ filter: "sepia(0.05) contrast(1.03) saturate(0.98)" }}
+                style={{ filter: PHOTO_FILTER, objectPosition: photo.focus }}
               />
+              {/* Background softening — blurs everything outside an ellipse around Lucy */}
+              {SOFTEN_BACKGROUND && photo.soften && (
+                <div
+                  className="pointer-events-none absolute inset-0 backdrop-blur-[1px] md:backdrop-blur-[2.5px]"
+                  style={{
+                    maskImage: `radial-gradient(ellipse 45% 72% at ${photo.soften}, transparent 65%, black 100%)`,
+                    WebkitMaskImage: `radial-gradient(ellipse 45% 72% at ${photo.soften}, transparent 65%, black 100%)`,
+                  }}
+                  aria-hidden="true"
+                />
+              )}
               {/* Warm bottom wash */}
               <div
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 opacity-60 transition-opacity duration-500 group-hover:opacity-20"
@@ -978,9 +1045,7 @@ function GallerySection() {
                 alt={photo.alt}
                 loading="lazy"
                 className="h-full w-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110"
-                style={{
-                  filter: "sepia(0.08) saturate(1.05)",
-                }}
+                style={{ filter: PHOTO_FILTER }}
               />
               {/* Subtle gold border glow on hover */}
               <div
@@ -1125,7 +1190,6 @@ function ContactSection() {
                 <option value="Private">Private</option>
                 <option value="Group">Group</option>
                 <option value="Online">Online</option>
-                <option value="Workshop">Workshop</option>
                 <option value="Other">Other</option>
               </select>
             </div>
@@ -1228,6 +1292,7 @@ export default function DemoEPage() {
       <ServicesSection />
       <StudioSection />
       <AboutDetailsSection />
+      <ShowPhotoSection />
       <CredentialsSection />
       <GallerySection />
       <ContactSection />

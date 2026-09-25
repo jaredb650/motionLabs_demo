@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     template: "%s | Movement Labs",
   },
   description:
-    "Movement Labs by Lucy Marie Schmidt — Berlin-based dance instructor and licensed physiotherapist specializing in Salsa On 1, Salsa On 2, and Modern Dance. Private lessons, group classes, workshops, and more.",
+    "Movement Labs by Lucy Marie Schmidt — Berlin-based dance instructor and licensed physiotherapist specializing in Salsa On 1, Salsa On 2, and Modern Dance. Private lessons and weekly group classes.",
   keywords: [
     "dance instructor Berlin",
     "salsa lessons Berlin",
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Movement Labs — Lucy Marie Schmidt",
     description:
-      "Berlin-based dance instructor and physiotherapist. Salsa On 1, Salsa On 2, Modern Dance. Private lessons, group classes, workshops.",
+      "Berlin-based dance instructor and physiotherapist. Salsa On 1, Salsa On 2, Modern Dance. Private lessons and weekly group classes.",
     images: ["/images/hero/lucy_d6.webp"],
   },
   robots: {
