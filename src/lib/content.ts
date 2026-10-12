@@ -48,7 +48,7 @@ export const siteContent = {
       ],
       schedule: "Every Saturday 12.00pm",
       location: "Wittstocker Straße 6, 10553 Berlin",
-      signupUrl: MODERN_DANCE_SIGNUP_URL,
+      cta: { label: "Sign Up", href: MODERN_DANCE_SIGNUP_URL, external: true },
       icon: "flame",
     },
     {
@@ -56,6 +56,7 @@ export const siteContent = {
       description: [
         "This therapy is tailored for your specific demands of training and performance. Together we analyze imbalances, overuse issues, and possible movement deficiencies. Your treatment begins with an in-depth evaluation to identify your individual needs and movement patterns.",
       ],
+      cta: { label: "Book a Session", href: "#contact", lessonType: "Dance Physical Therapy" },
       icon: "pulse",
     },
     {
@@ -63,6 +64,7 @@ export const siteContent = {
       description: [
         "One-on-one sessions at her private studio in Berlin. Tailored to whatever you want to work on — technique, a specific piece, or building confidence in a style. All levels welcome.",
       ],
+      cta: { label: "Book a Lesson", href: "#contact", lessonType: "Private Lesson" },
       icon: "user",
     },
   ] as {
@@ -70,7 +72,8 @@ export const siteContent = {
     description: string[];
     schedule?: string;
     location?: string;
-    signupUrl?: string;
+    // every card ends in one action; lessonType pre-selects the contact form's dropdown
+    cta: { label: string; href: string; external?: boolean; lessonType?: string };
     icon: string;
   }[],
 

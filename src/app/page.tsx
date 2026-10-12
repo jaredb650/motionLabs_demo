@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { siteContent } from "@/lib/content";
+import { siteContent, MODERN_DANCE_SIGNUP_URL } from "@/lib/content";
 import { img } from "@/lib/basePath";
 
 /* ─────────────────────────────────────────────
@@ -259,7 +259,13 @@ function HeroSection() {
     offset: ["start start", "end start"],
   });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  // Copy drifts less than the video and is gone before it reaches the hero's bottom edge.
+  // Opacity uses the function form on purpose: the array form gets handed to a native ScrollTimeline,
+  // which measures the whole page instead of the hero, so the fade lagged far behind the parallax.
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const opacity = useTransform(scrollYProgress, (v) => Math.max(0, 1 - v / 0.5));
+  // Scroll cue disappears on the first scroll so it never crosses the button
+  const cueOpacity = useTransform(scrollYProgress, (v) => Math.max(0, 1 - v / 0.06));
 
   return (
     <section
@@ -332,8 +338,15 @@ function HeroSection() {
         aria-hidden="true"
       />
 
+      {/* Video dissolves into The Lab instead of ending on a hard edge */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
+        style={{ background: `linear-gradient(to bottom, transparent 0%, ${C.nearBlack} 100%)` }}
+        aria-hidden="true"
+      />
+
       <motion.div
-        style={{ y, opacity }}
+        style={{ y: contentY, opacity }}
         className="relative z-10 px-6 text-center"
       >
         {/* Small kicker */}
@@ -342,7 +355,7 @@ function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.4, delay: 0.4 }}
           className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.4em]"
-          style={{ color: C.gold }}
+          style={{ color: C.goldDark }}
         >
           Berlin based
         </motion.p>
@@ -385,7 +398,7 @@ function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, delay: 1.9 }}
           className="mt-6 font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-          style={{ color: C.midGray }}
+          style={{ color: C.lightGray }}
         >
           with {siteContent.name}
         </motion.p>
@@ -398,21 +411,24 @@ function HeroSection() {
           className="mt-12"
         >
           <a
-            href="#contact"
-            className="inline-block border px-10 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2]"
-            style={{ borderColor: C.gold, color: C.gold }}
+            href="#lessons"
+            className="inline-block border bg-[#FAF7F2]/80 px-10 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] backdrop-blur-sm transition-all duration-500 hover:bg-[#A0522D] hover:text-[#FAF7F2]"
+            style={{ borderColor: C.goldDark, color: C.goldDark }}
           >
             Book a Lesson
           </a>
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — sits behind the copy, and is dropped on short windows where it would land on the button */}
+      <motion.div
+        style={{ opacity: cueOpacity }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 [@media(max-height:880px)]:hidden"
+      >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
@@ -420,6 +436,7 @@ function HeroSection() {
           className="h-10 w-px"
           style={{ backgroundColor: C.gold, opacity: 0.5 }}
         />
+      </motion.div>
       </motion.div>
     </section>
   );
@@ -507,14 +524,14 @@ function AboutDetailsSection() {
     <section
       id="coach"
       className="relative py-28 sm:py-36"
-      style={{ backgroundColor: C.nearBlack }}
+      style={{ backgroundColor: C.black }}
     >
       <div className="mx-auto max-w-4xl px-6 lg:px-10">
         {/* Section header */}
         <FadeSection className="text-center">
           <p
             className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: C.gold }}
+            style={{ color: C.goldDark }}
           >
             Qualifications
           </p>
@@ -568,7 +585,7 @@ function AboutDetailsSection() {
           </p>
           <p
             className="mt-2 font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.3em]"
-            style={{ color: C.gold }}
+            style={{ color: C.goldDark }}
           >
             Dance Instructor &middot; Physiotherapist
           </p>
@@ -588,7 +605,7 @@ function AboutDetailsSection() {
         <FadeSection delay={0.15} className="mt-16">
           <h3
             className="text-center font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: C.gold }}
+            style={{ color: C.goldDark }}
           >
             Training &amp; Credentials
           </h3>
@@ -631,7 +648,7 @@ function ServicesSection() {
         <FadeSection className="text-center">
           <p
             className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: C.gold }}
+            style={{ color: C.goldDark }}
           >
             Offerings
           </p>
@@ -668,13 +685,13 @@ function ServicesSection() {
             >
               {/* Small index numeral */}
               <span
-                className="font-[family-name:var(--font-cormorant)] text-xs uppercase tracking-[0.3em]"
-                style={{ color: C.gold }}
+                className="font-[family-name:var(--font-cormorant)] text-xs lining-nums uppercase tracking-[0.3em]"
+                style={{ color: C.goldDark }}
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3
-                className="mt-3 font-[family-name:var(--font-cormorant)] text-2xl font-light uppercase leading-tight tracking-[0.08em]"
+                className="mt-3 font-[family-name:var(--font-cormorant)] text-2xl font-light lining-nums uppercase leading-tight tracking-[0.08em]"
                 style={{ color: C.white }}
               >
                 {service.title}
@@ -686,7 +703,7 @@ function ServicesSection() {
               />
               <div
                 className="mt-5 space-y-3 font-[family-name:var(--font-inter)] text-sm leading-relaxed"
-                style={{ color: C.midGray }}
+                style={{ color: C.lightGray }}
               >
                 {service.description.map((para) => (
                   <p key={para}>{para}</p>
@@ -707,17 +724,20 @@ function ServicesSection() {
                 </div>
               )}
 
-              {service.signupUrl && (
+              <div className="mt-auto pt-8">
                 <a
-                  href={service.signupUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-8 inline-block self-start border px-8 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2]"
-                  style={{ borderColor: C.gold, color: C.gold }}
+                  href={service.cta.href}
+                  {...(service.cta.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  onClick={() => {
+                    const select = document.getElementById("fi-select-lessonType") as HTMLSelectElement | null;
+                    if (select && service.cta.lessonType) select.value = service.cta.lessonType;
+                  }}
+                  className="inline-block border px-8 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#A0522D] hover:text-[#FAF7F2]"
+                  style={{ borderColor: C.goldDark, color: C.goldDark }}
                 >
-                  Sign Up
+                  {service.cta.label}
                 </a>
-              )}
+              </div>
             </motion.div>
           ))}
         </div>
@@ -733,15 +753,15 @@ function ShowPhotoSection() {
   return (
     <section
       aria-label="On stage"
-      className="relative pb-4"
-      style={{ backgroundColor: C.nearBlack }}
+      className="relative pb-28 sm:pb-36"
+      style={{ backgroundColor: C.black }}
     >
       <div className="mx-auto max-w-lg px-6 lg:px-0">
         <FadeSection>
           <figure>
             <div
               className="relative aspect-[1600/1484] overflow-hidden"
-              style={{ backgroundColor: C.black }}
+              style={{ backgroundColor: C.nearBlack }}
             >
               <img
                 src={img("/images/students/students_10_modern_attitude.webp")}
@@ -753,7 +773,7 @@ function ShowPhotoSection() {
             </div>
             <figcaption
               className="mt-5 text-center font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-              style={{ color: C.gold }}
+              style={{ color: C.goldDark }}
             >
               On Stage
             </figcaption>
@@ -778,7 +798,7 @@ function CredentialsSection() {
         <FadeSection className="text-center">
           <p
             className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: C.gold }}
+            style={{ color: C.goldDark }}
           >
             Credentials
           </p>
@@ -868,7 +888,7 @@ function CredentialsSection() {
                 <div className="sm:hidden">
                   <span
                     className="block font-[family-name:var(--font-cormorant)] text-lg font-light"
-                    style={{ color: C.gold }}
+                    style={{ color: C.goldDark }}
                   >
                     {entry.year}
                   </span>
@@ -929,7 +949,7 @@ function StudioSection() {
         <FadeSection className="text-center">
           <p
             className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: C.gold }}
+            style={{ color: C.goldDark }}
           >
             Classes
           </p>
@@ -984,14 +1004,16 @@ function StudioSection() {
           <GoldDivider />
           <p
             className="mt-8 font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.3em]"
-            style={{ color: C.midGray }}
+            style={{ color: C.lightGray }}
           >
             Weekly group classes &middot; Private sessions &middot; Berlin
           </p>
           <a
-            href="#contact"
-            className="mt-8 inline-block border px-10 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2]"
-            style={{ borderColor: C.gold, color: C.gold }}
+            href={MODERN_DANCE_SIGNUP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-block border px-10 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#A0522D] hover:text-[#FAF7F2]"
+            style={{ borderColor: C.goldDark, color: C.goldDark }}
           >
             Join a Class
           </a>
@@ -1009,9 +1031,9 @@ function StudioSection() {
 const galleryPhotos = [
   { src: img("/images/gallery/lucy_colonnade_pose.webp"), alt: "Barefoot modern dance pose in front of stone columns under a clear blue sky", aspect: "aspect-[15/32]", focus: "47% 50%" },
   { src: img("/images/gallery/lucy_f13.webp"), alt: "Backlit spinning with dramatic light flare", aspect: "aspect-[3/4]" },
-  { src: img("/images/gallery/lucy_f3.webp"), alt: "Silhouette with backlight and dramatic lens flare", aspect: "aspect-[4/3]" },
+  { src: img("/images/hero/lucy_f3.webp"), alt: "Silhouette with backlight and dramatic lens flare", aspect: "aspect-[4/3]" },
   { src: img("/images/gallery/lucy_f8.webp"), alt: "Overhead artistic composition looking down at dancer", aspect: "aspect-[3/4]" },
-  { src: img("/images/gallery/lucy_f23.webp"), alt: "Dramatic backlit hair spin captured from below", aspect: "aspect-[4/3]" },
+  { src: img("/images/hero/lucy_f23.webp"), alt: "Dramatic backlit hair spin captured from below", aspect: "aspect-[4/3]" },
 ];
 
 function GallerySection() {
@@ -1025,7 +1047,7 @@ function GallerySection() {
         <FadeSection className="text-center">
           <p
             className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: C.gold }}
+            style={{ color: C.goldDark }}
           >
             Gallery
           </p>
@@ -1140,7 +1162,7 @@ function ContactSection() {
         <FadeSection className="text-center">
           <p
             className="font-[family-name:var(--font-inter)] text-[11px] uppercase tracking-[0.35em]"
-            style={{ color: C.gold }}
+            style={{ color: C.goldDark }}
           >
             Contact
           </p>
@@ -1198,9 +1220,9 @@ function ContactSection() {
                 style={baseStyles}
               >
                 <option value="">Select...</option>
-                <option value="Private">Private</option>
-                <option value="Group">Group</option>
-                <option value="Online">Online</option>
+                <option value="Modern Dance Class">Modern Dance Class</option>
+                <option value="Dance Physical Therapy">Dance Physical Therapy</option>
+                <option value="Private Lesson">Private 1-on-1 Lesson</option>
                 <option value="Other">Other</option>
               </select>
             </div>
@@ -1224,8 +1246,8 @@ function ContactSection() {
               <button
                 type="submit"
                 disabled={submitting || !sdkReady}
-                className="inline-block border px-12 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2] disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ borderColor: C.gold, color: C.gold, backgroundColor: "transparent" }}
+                className="inline-block border px-12 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#A0522D] hover:text-[#FAF7F2] disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ borderColor: C.goldDark, color: C.goldDark, backgroundColor: "transparent" }}
               >
                 {submitting ? "Sending..." : "Send Message"}
               </button>
@@ -1237,21 +1259,18 @@ function ContactSection() {
         <FadeSection delay={0.3} className="mt-16">
           <GoldDivider />
           <div className="mt-10 flex flex-col items-center gap-3 text-center">
-            <p
-              className="font-[family-name:var(--font-inter)] text-sm"
+            <a
+              href={`https://www.instagram.com/${siteContent.instagram.replace("@", "")}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-[family-name:var(--font-inter)] text-sm underline decoration-1 underline-offset-4 transition-colors hover:text-[#A0522D]"
               style={{ color: C.lightGray }}
             >
               {siteContent.instagram}
-            </p>
+            </a>
             <p
               className="font-[family-name:var(--font-inter)] text-sm"
-              style={{ color: C.midGray }}
-            >
-              {siteContent.domain}
-            </p>
-            <p
-              className="font-[family-name:var(--font-inter)] text-sm"
-              style={{ color: C.midGray }}
+              style={{ color: C.lightGray }}
             >
               {siteContent.location}
             </p>
@@ -1278,7 +1297,7 @@ function FooterSection() {
         <div className="h-px w-full" style={{ backgroundColor: `${C.gold}30` }} />
         <p
           className="mt-8 text-center font-[family-name:var(--font-inter)] text-xs tracking-[0.15em]"
-          style={{ color: C.midGray }}
+          style={{ color: C.lightGray }}
         >
           &copy; 2026 {siteContent.business} &mdash; {siteContent.name}
         </p>
