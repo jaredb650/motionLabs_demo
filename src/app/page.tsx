@@ -449,21 +449,28 @@ function AboutIntroSection() {
 
         {/* Specializations */}
         <FadeSection delay={0.2} className="mt-16 text-center">
-          <p
-            className="flex flex-col items-center gap-3 font-[family-name:var(--font-cormorant)] text-xl lining-nums font-light uppercase tracking-[0.2em] sm:flex-row sm:justify-center sm:gap-5 sm:text-2xl"
+          <div
+            className="flex flex-col items-center gap-3 font-[family-name:var(--font-cormorant)] text-xl lining-nums font-light uppercase tracking-[0.2em] sm:gap-4 sm:text-lg md:text-2xl"
             style={{ color: C.gold }}
           >
-            {siteContent.styles.map((style, i) => (
-              <span key={style} className="flex items-center gap-5 whitespace-nowrap">
-                {i > 0 && (
-                  <span className="hidden sm:inline" aria-hidden="true">
-                    &bull;
+            {siteContent.styles.map((group) => (
+              <p
+                key={group.join()}
+                className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-5"
+              >
+                {group.map((style, i) => (
+                  <span key={style} className="flex items-center gap-5 whitespace-nowrap">
+                    {i > 0 && (
+                      <span className="hidden sm:inline" aria-hidden="true">
+                        &bull;
+                      </span>
+                    )}
+                    {style}
                   </span>
-                )}
-                {style}
-              </span>
+                ))}
+              </p>
             ))}
-          </p>
+          </div>
         </FadeSection>
 
         <GoldDivider className="mt-12" />
@@ -474,7 +481,7 @@ function AboutIntroSection() {
             className="text-center font-[family-name:var(--font-inter)] text-base leading-relaxed sm:text-lg"
             style={{ color: C.offWhite }}
           >
-            Aesthetics meet function. With a holistic approach, Lucy merges movement, art and clinical knowledge to support you individually &mdash; for greater ease, stability, and confidence in your body.
+            With a holistic approach, Lucy merges movement, art and clinical knowledge to support you individually &mdash; for greater ease, stability, and confidence in your body. Every given class is a workplace where we analyze and experiment with movements.
           </p>
         </FadeSection>
 
@@ -677,12 +684,40 @@ function ServicesSection() {
                 style={{ backgroundColor: `${C.gold}66` }}
                 aria-hidden="true"
               />
-              <p
-                className="mt-5 font-[family-name:var(--font-inter)] text-sm leading-relaxed"
+              <div
+                className="mt-5 space-y-3 font-[family-name:var(--font-inter)] text-sm leading-relaxed"
                 style={{ color: C.midGray }}
               >
-                {service.description}
-              </p>
+                {service.description.map((para) => (
+                  <p key={para}>{para}</p>
+                ))}
+              </div>
+
+              {/* When + where (group classes only) */}
+              {service.schedule && (
+                <div
+                  className="mt-6 font-[family-name:var(--font-inter)] text-[11px] uppercase leading-loose tracking-[0.2em]"
+                  style={{ color: C.lightGray }}
+                >
+                  <p>{service.schedule}</p>
+                  {/* street / city on separate lines so the narrow card never splits mid-address */}
+                  {service.location?.split(", ").map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
+              )}
+
+              {service.signupUrl && (
+                <a
+                  href={service.signupUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-block self-start border px-8 py-3 font-[family-name:var(--font-inter)] text-xs uppercase tracking-[0.3em] transition-all duration-500 hover:bg-[#C47248] hover:text-[#FAF7F2]"
+                  style={{ borderColor: C.gold, color: C.gold }}
+                >
+                  Sign Up
+                </a>
+              )}
             </motion.div>
           ))}
         </div>
@@ -701,19 +736,19 @@ function ShowPhotoSection() {
       className="relative pb-4"
       style={{ backgroundColor: C.nearBlack }}
     >
-      <div className="mx-auto max-w-md px-6 lg:px-0">
+      <div className="mx-auto max-w-lg px-6 lg:px-0">
         <FadeSection>
           <figure>
             <div
-              className="relative aspect-[4/5] overflow-hidden"
+              className="relative aspect-[1600/1484] overflow-hidden"
               style={{ backgroundColor: C.black }}
             >
               <img
-                src={img("/images/students/students_09_performance.webp")}
-                alt="Lucy performing on stage with an ensemble in flowing costumes under violet theatrical light"
+                src={img("/images/students/students_10_modern_attitude.webp")}
+                alt="Lucy in a Graham-inspired modern dance attitude at the barre"
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover"
-                style={{ filter: PHOTO_FILTER, objectPosition: "55% 32%" }}
+                style={{ filter: PHOTO_FILTER }}
               />
             </div>
             <figcaption
@@ -859,25 +894,19 @@ function CredentialsSection() {
 type StudioPhoto = {
   src: string;
   alt: string;
-  // tailwind span on the md+ grid (4 columns)
-  span: string;
-  // cell shape in the 2-column mobile grid
+  // cell shape in the 2-column mobile grid (every photo is a 3:4 portrait on md+)
   mobile: string;
   // where the subject's face sits in the photo — drives object-position so heads never get cropped
   focus: string;
 };
 
 const PORTRAIT = "aspect-[3/4]";
-const LANDSCAPE = "col-span-2 aspect-[4/3]";
+const FULL_PORTRAIT = "col-span-2 aspect-[3/4]";
 
 const studioPhotos: StudioPhoto[] = [
-  { src: img("/images/students/students_02_lucy_smiling.webp"), alt: "Lucy smiling while teaching a salsa class with students behind her", span: "md:col-span-2 md:row-span-2", mobile: PORTRAIT, focus: "50% 25%" },
-  { src: img("/images/students/students_01_lineup.webp"), alt: "Students lined up in the studio practicing salsa footwork", span: "md:col-span-2", mobile: PORTRAIT, focus: "60% 30%" },
-  { src: img("/images/students/students_08_lucy_teaching.webp"), alt: "Lucy teaching a styling cue, students in line behind her", span: "md:col-span-2", mobile: PORTRAIT, focus: "65% 22%" },
-  { src: img("/images/students/students_10_modern_attitude.webp"), alt: "Lucy in a Graham-inspired modern dance attitude pose", span: "md:col-span-2", mobile: LANDSCAPE, focus: "40% 50%" },
-  { src: img("/images/students/students_04_line_practice.webp"), alt: "Lucy demonstrating styling at the mirror while students watch", span: "md:col-span-2", mobile: PORTRAIT, focus: "35% 24%" },
-  { src: img("/images/students/students_03_studio_wide.webp"), alt: "Wide view of the dance studio with students gathered around", span: "md:col-span-2", mobile: PORTRAIT, focus: "50% 42%" },
-  { src: img("/images/students/students_06_lucy_styling.webp"), alt: "Lucy opening her arms in a body-movement drill for Salsa On 2", span: "md:col-span-2", mobile: PORTRAIT, focus: "45% 24%" },
+  { src: img("/images/students/students_02_lucy_smiling.webp"), alt: "Lucy smiling while teaching a salsa class with students behind her", mobile: PORTRAIT, focus: "50% 25%" },
+  { src: img("/images/students/students_11_modern_trio.webp"), alt: "Lucy and two students holding a modern dance pose with arms raised in a bright studio", mobile: FULL_PORTRAIT, focus: "50% 40%" },
+  { src: img("/images/students/students_04_line_practice.webp"), alt: "Lucy demonstrating styling at the mirror while students watch", mobile: PORTRAIT, focus: "35% 24%" },
 ];
 
 function StudioSection() {
@@ -913,8 +942,8 @@ function StudioSection() {
           <GoldDivider className="mt-8" />
         </FadeSection>
 
-        {/* Editorial asymmetric grid (4 cols on md+), dense flow fills gaps */}
-        <div className="mt-16 grid grid-flow-dense grid-cols-2 gap-3 sm:gap-5 md:auto-rows-[18rem] md:grid-cols-4 md:gap-6">
+        {/* 2-col on mobile (dense flow fills gaps), three portraits in a row on md+ */}
+        <div className="mt-16 grid grid-flow-dense grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 md:gap-6">
           {studioPhotos.map((photo, i) => (
             <motion.figure
               key={photo.src}
@@ -922,7 +951,7 @@ function StudioSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.8, delay: i * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
-              className={`group relative overflow-hidden ${photo.mobile} md:aspect-auto ${photo.span}`}
+              className={`group relative overflow-hidden ${photo.mobile} md:col-span-1 md:aspect-[3/4]`}
               style={{ backgroundColor: C.black }}
             >
               <img
@@ -975,16 +1004,14 @@ function StudioSection() {
 /* =============================================================
    GALLERY
    ============================================================= */
+// Aspects are tuned so the 3-column masonry ends flush: the tall colonnade shot
+// matches the height of a 3/4 + 4/3 pair (plus the gap) in each other column.
 const galleryPhotos = [
-  { src: img("/images/gallery/lucy_d7.webp"), alt: "Dramatic close-up portrait with hand raised in a powerful gesture", aspect: "aspect-[3/4]" },
-  { src: img("/images/gallery/lucy_f3.webp"), alt: "Silhouette with backlight and dramatic lens flare", aspect: "aspect-[4/3]" },
-  { src: img("/images/gallery/lucy_d12.webp"), alt: "Grand jete leap with arms wide in a stunning display of movement", aspect: "aspect-[3/4]" },
-  { src: img("/images/gallery/lucy_f4.webp"), alt: "Silhouette with arm reaching up toward dramatic sun behind", aspect: "aspect-[3/4]" },
-  { src: img("/images/gallery/lucy_f8.webp"), alt: "Overhead artistic composition looking down at dancer", aspect: "aspect-[4/5]" },
-  { src: img("/images/gallery/lucy_f23.webp"), alt: "Dramatic backlit hair spin captured from below", aspect: "aspect-[4/3]" },
+  { src: img("/images/gallery/lucy_colonnade_pose.webp"), alt: "Barefoot modern dance pose in front of stone columns under a clear blue sky", aspect: "aspect-[15/32]", focus: "47% 50%" },
   { src: img("/images/gallery/lucy_f13.webp"), alt: "Backlit spinning with dramatic light flare", aspect: "aspect-[3/4]" },
-  { src: img("/images/gallery/lucy_f14.webp"), alt: "Looking up at camera with architectural ceiling creating dramatic frame", aspect: "aspect-[3/4]" },
-  { src: img("/images/gallery/lucy_f32.webp"), alt: "Intimate portrait at column with beautiful light on face", aspect: "aspect-[3/4]" },
+  { src: img("/images/gallery/lucy_f3.webp"), alt: "Silhouette with backlight and dramatic lens flare", aspect: "aspect-[4/3]" },
+  { src: img("/images/gallery/lucy_f8.webp"), alt: "Overhead artistic composition looking down at dancer", aspect: "aspect-[3/4]" },
+  { src: img("/images/gallery/lucy_f23.webp"), alt: "Dramatic backlit hair spin captured from below", aspect: "aspect-[4/3]" },
 ];
 
 function GallerySection() {
@@ -1029,7 +1056,7 @@ function GallerySection() {
                 alt={photo.alt}
                 loading="lazy"
                 className="h-full w-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110"
-                style={{ filter: PHOTO_FILTER }}
+                style={{ filter: PHOTO_FILTER, objectPosition: photo.focus }}
               />
               {/* Subtle gold border glow on hover */}
               <div

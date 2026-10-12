@@ -1,3 +1,7 @@
+// Lucy makes a new Google Form for the Modern Dance class every month and sends
+// the next one mid-month — swap it here.
+export const MODERN_DANCE_SIGNUP_URL = "https://forms.gle/cjDMB8brJdez52Vx5";
+
 export const siteContent = {
   name: "Lucy Marie Schmidt",
   business: "Movement Labs",
@@ -5,10 +9,10 @@ export const siteContent = {
   location: "Berlin, Germany",
   instagram: "@lucymarie.s",
 
+  // One line per group on desktop (modern / Latin); mobile stacks every style
   styles: [
-    "Modern Dance",
-    "Salsa On 1",
-    "Salsa On 2",
+    ["Graham Technique", "Horton Technique"],
+    ["Salsa On2", "Mambo", "Latin Dance Workout"],
   ],
 
   about: {
@@ -37,23 +41,38 @@ export const siteContent = {
   services: [
     {
       title: "Modern Dance",
-      description:
-        "Rooted in both Graham and Horton technique. Both emphasize moving from the core and connecting physicality with emotionality. While developing technique in class we will experiment with basic human movements formed into principles, such as Contraction and Release, and Spirals.",
+      description: [
+        "This class is based on the fundamental principles of the Graham technique, such as contraction and release, spirals and breath guided movements. The emphasis is on moving from the core and the limbs simply following the core's impulse.",
+        "We begin with floor work to strengthen the use of the torso before moving to standing and traveling patterns that later on move across the floor.",
+        "This class is for beginners who have little to no prior experience in the technique.",
+      ],
+      schedule: "Every Saturday 12.00pm",
+      location: "Wittstocker Straße 6, 10553 Berlin",
+      signupUrl: MODERN_DANCE_SIGNUP_URL,
       icon: "flame",
     },
     {
-      title: "Salsa",
-      description:
-        "Two weekly classes: Salsa On 1 — Ladies Styling, focused on posture, lines, and feminine movement quality; and Salsa On 2 — Body Movement, working through isolation, body rolls, and the subtle weight shifts that make On 2 feel alive.",
+      title: "Dance Physical Therapy",
+      description: [
+        "This therapy is tailored for your specific demands of training and performance. Together we analyze imbalances, overuse issues, and possible movement deficiencies. Your treatment begins with an in-depth evaluation to identify your individual needs and movement patterns.",
+      ],
       icon: "pulse",
     },
     {
       title: "Private 1-on-1 Lessons",
-      description:
+      description: [
         "One-on-one sessions at her private studio in Berlin. Tailored to whatever you want to work on — technique, a specific piece, or building confidence in a style. All levels welcome.",
+      ],
       icon: "user",
     },
-  ],
+  ] as {
+    title: string;
+    description: string[];
+    schedule?: string;
+    location?: string;
+    signupUrl?: string;
+    icon: string;
+  }[],
 
   timeline: [
     { year: "2014", milestone: "Summer Intensive — Canadian Dance Company, Toronto" },

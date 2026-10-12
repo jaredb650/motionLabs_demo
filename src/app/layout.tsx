@@ -48,16 +48,17 @@ export const metadata: Metadata = {
     template: "%s | Movement Labs",
   },
   description:
-    "Movement Labs by Lucy Marie Schmidt — Berlin-based dance instructor and licensed physiotherapist specializing in Salsa On 1, Salsa On 2, and Modern Dance. Private lessons and weekly group classes.",
+    "Movement Labs by Lucy Marie Schmidt — Berlin-based dance instructor and licensed physiotherapist specializing in Modern Dance (Graham & Horton technique), Salsa On2, Mambo, and dance physical therapy. Private lessons and weekly group classes.",
   keywords: [
     "dance instructor Berlin",
     "salsa lessons Berlin",
     "modern dance Berlin",
     "Lucy Marie Schmidt",
     "Movement Labs",
-    "Salsa On 1",
-    "Salsa On 2",
+    "Horton technique",
+    "Salsa On2",
     "Graham technique",
+    "dance physical therapy",
     "physiotherapy dance",
     "private dance lessons",
     "group dance classes",
@@ -72,7 +73,7 @@ export const metadata: Metadata = {
     siteName: "Movement Labs",
     title: "Movement Labs — Lucy Marie Schmidt",
     description:
-      "Berlin-based dance instructor and licensed physiotherapist specializing in Salsa On 1, Salsa On 2, and Modern Dance. 10+ years of training across NYC, Toronto, Buenos Aires, and Berlin.",
+      "Berlin-based dance instructor and licensed physiotherapist specializing in Modern Dance (Graham & Horton technique), Salsa On2, Mambo, and dance physical therapy. 10+ years of training across NYC, Toronto, Buenos Aires, and Berlin.",
     images: [
       {
         url: "/images/hero/lucy_d6.webp",
@@ -86,7 +87,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Movement Labs — Lucy Marie Schmidt",
     description:
-      "Berlin-based dance instructor and physiotherapist. Salsa On 1, Salsa On 2, Modern Dance. Private lessons and weekly group classes.",
+      "Berlin-based dance instructor and physiotherapist. Modern Dance, Salsa On2, Mambo, dance physical therapy. Private lessons and weekly group classes.",
     images: ["/images/hero/lucy_d6.webp"],
   },
   robots: {
